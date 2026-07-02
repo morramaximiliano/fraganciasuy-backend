@@ -2,7 +2,6 @@ import { Sequelize } from 'sequelize';
 import setupModels from '../db/models/index.js';
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres',
   dialectOptions: {
     ssl: {
       require: true,
