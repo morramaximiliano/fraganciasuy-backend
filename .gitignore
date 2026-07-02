@@ -127,6 +127,7 @@ web_modules/
 # dotenv environment variable files
 .env
 linkedin
+linkedin2
 .env.development.local
 .env.test.local
 .env.production.local
