@@ -10,7 +10,8 @@ app.use(
   cors({
     origin: [
       'http://localhost:5173',
-      'https://unsliced-sandbag-unequal.ngrok-free.dev',
+      'https://fraganciasuy-backend.onrender.com',
+      'https://fraganciasuy-frontend.vercel.app/',
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
