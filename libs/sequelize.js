@@ -13,4 +13,8 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
 
 setupModels(sequelize);
 
+sequelize.sync({ force: true }).then(() => {
+  console.log('Tablas creadas exitosamente');
+});
+
 export default sequelize;
