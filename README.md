@@ -2,6 +2,16 @@
 
 API REST profesional para gestión de una perfumería, construida con Node.js y Express, pensada para administrar catálogo, usuarios, pedidos, carrito y pagos con Mercado Pago. El proyecto combina una arquitectura modular por capas, autenticación segura con JWT y persistencia relacional con PostgreSQL y Sequelize.
 
+## CREDENCIALES DE PRUEBA
+
+admin@admin.com / admin1234 (PARA PROBAR DASHBOARD DE ADMIN)
+
+Se incluye una cuenta de prueba de Mercado Libre para testear el flujo de pagos, cumpliendo con los estándares de seguridad sin exponer datos reales :
+
+user: TESTUSER105369091249227838
+
+pass: D3LdYJ1Kb7
+
 ## Lo que resuelve
 
 Este backend centraliza la operación de un e-commerce de perfumería con foco en:
