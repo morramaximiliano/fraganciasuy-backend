@@ -145,4 +145,14 @@ const getOrderById = async (userId, orderId) => {
   }
 };
 
-export { createOrder, getOrdersByUser, getOrderById };
+const getAllOrders = async () => {
+  try {
+    const orders = await sequelize.models.Order.findAll();
+    return orders;
+  } catch (error) {
+    console.error('Error en getAllOrders', error);
+    throw error;
+  }
+};
+
+export { createOrder, getOrdersByUser, getOrderById, getAllOrders };

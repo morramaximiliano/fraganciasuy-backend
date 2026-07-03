@@ -1,11 +1,13 @@
 import express from 'express';
 import { validateToken } from '../middlewares/validateAuth.js';
 import { validatorHandler } from '../middlewares/validator.handler.js';
+import { authorizeRole } from '../middlewares/checkRole.js';
 import { schemaCreateOrder, schemaGetOrder } from '../schema/schemaOrder.js';
 import {
   createOrder,
   getOrdersByUser,
   getOrderById,
+  getAllOrders,
 } from '../service/serviceOrder.js';
 
 const router = express.Router();
@@ -32,6 +34,15 @@ router.get('/', async (req, res, next) => {
     const userId = req.user.id;
     const orders = await getOrdersByUser(userId);
 
+    return res.status(200).json({ orders });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/all', authorizeRole('admin'), async (req, res, next) => {
+  try {
+    const orders = await getAllOrders();
     return res.status(200).json({ orders });
   } catch (error) {
     next(error);
