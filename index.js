@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 
 app.use(
   cors({
-    origin: ['https://fraganciasuy-frontend.vercel.app'],
+    origin: ['https://fraganciasuy-frontend.vercel.app', 'localhost'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
