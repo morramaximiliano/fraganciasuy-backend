@@ -94,6 +94,20 @@ const createOrder = async (userId, orderData) => {
   }
 };
 
+const deleteOrder = async (id) => {
+  try {
+    const order = await sequelize.models.Order.findByPk(id);
+    if (!order) {
+      throw new Error(`Orden con id ${id} no encontrada`);
+    }
+    await order.destroy();
+    return { success: true, message: 'orden eliminada exitosamente' };
+  } catch (error) {
+    console.error(`Error en deleteOrder con id ${id}`);
+    throw error;
+  }
+};
+
 const getAllOrders = async () => {
   try {
     const orders = await sequelize.models.Order.findAll({
@@ -126,4 +140,4 @@ const getAllOrders = async () => {
   }
 };
 
-export { createOrder, getAllOrders };
+export { createOrder, getAllOrders, deleteOrder };
