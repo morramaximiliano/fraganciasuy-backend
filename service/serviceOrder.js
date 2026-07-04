@@ -147,7 +147,9 @@ const getOrderById = async (userId, orderId) => {
 
 const getAllOrders = async () => {
   try {
-    const orders = await sequelize.models.Order.findAll();
+    const orders = await sequelize.models.Order.findAll({
+      include: [{ model: sequelize.models.OrderDetails, as: 'details' }],
+    });
     return orders;
   } catch (error) {
     console.error('Error en getAllOrders', error);
