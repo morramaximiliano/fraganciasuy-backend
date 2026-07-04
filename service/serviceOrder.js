@@ -94,57 +94,6 @@ const createOrder = async (userId, orderData) => {
   }
 };
 
-const getOrdersByUser = async (userId) => {
-  try {
-    const orders = await sequelize.models.Order.findAll({
-      where: { userId },
-      order: [['id', 'DESC']],
-    });
-    return orders;
-  } catch (error) {
-    console.error('Error en getOrdersByUser:', error);
-    throw error;
-  }
-};
-
-const getOrderById = async (userId, orderId) => {
-  try {
-    const order = await sequelize.models.Order.findOne({
-      where: { id: orderId, userId },
-      include: [
-        {
-          model: sequelize.models.OrderDetails,
-          as: 'details',
-          attributes: ['id', 'name'],
-          include: [
-            {
-              model: sequelize.models.Product,
-              as: 'product',
-              attributes: ['name', 'imageUrl'],
-              include: [
-                {
-                  model: sequelize.models.Brand,
-                  as: 'brand',
-                  attributes: ['name'],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    });
-
-    if (!order) {
-      throw new Error('ORDER_NOT_FOUND');
-    }
-
-    return order;
-  } catch (error) {
-    console.error('Error en getOrderById:', error);
-    throw error;
-  }
-};
-
 const getAllOrders = async () => {
   try {
     const orders = await sequelize.models.Order.findAll({
@@ -177,4 +126,4 @@ const getAllOrders = async () => {
   }
 };
 
-export { createOrder, getOrdersByUser, getOrderById, getAllOrders };
+export { createOrder, getAllOrders };
