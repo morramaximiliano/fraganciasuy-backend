@@ -152,7 +152,7 @@ const getAllOrders = async () => {
         {
           model: sequelize.models.OrderDetails,
           as: 'details',
-          attributes: ['id', 'skuId'],
+          attributes: ['id', 'skuId', 'quantity'],
           include: [
             {
               model: sequelize.models.ProductSku,
