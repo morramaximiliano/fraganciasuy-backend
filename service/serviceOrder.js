@@ -113,8 +113,8 @@ const getOrderById = async (userId, orderId) => {
       where: { id: orderId, userId },
       include: [
         {
-          model: sequelize.models.ProductSku,
-          as: 'sku',
+          model: sequelize.models.OrderDetails,
+          as: 'details',
           attributes: ['id', 'name'],
           include: [
             {
@@ -147,29 +147,7 @@ const getOrderById = async (userId, orderId) => {
 
 const getAllOrders = async () => {
   try {
-    const orders = await sequelize.models.Order.findAll({
-      include: [
-        {
-          model: sequelize.models.ProductSku,
-          as: 'sku',
-          attributes: ['id', 'name'],
-          include: [
-            {
-              model: sequelize.models.Product,
-              as: 'product',
-              attributes: ['name', 'imageUrl'],
-              include: [
-                {
-                  model: sequelize.models.Brand,
-                  as: 'brand',
-                  attributes: ['name'],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    });
+    const orders = await sequelize.models.Order.findAll();
     return orders;
   } catch (error) {
     console.error('Error en getAllOrders', error);
