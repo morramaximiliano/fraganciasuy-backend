@@ -157,7 +157,7 @@ const getAllOrders = async () => {
             {
               model: sequelize.models.ProductSku,
               as: 'sku',
-              attributes: ['price'],
+              attributes: ['price', 'sizeMl'],
               include: [
                 {
                   model: sequelize.models.Product,
