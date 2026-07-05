@@ -34,22 +34,24 @@ const getCartByUser = async (userId) => {
 
 const syncEntireCart = async (userId, items) => {
   try {
-    await sequelize.models.CartItem.destroy({
-      where: { userId },
-      transaction: t,
-    });
+    await sequelize.transaction(async (t) => {
+      await sequelize.models.CartItem.destroy({
+        where: { userId },
+        transaction: t,
+      });
 
-    // 2. Si hay items, crea los nuevos (bulkCreate)
-    if (Array.isArray(items) && items.length > 0) {
-      await sequelize.models.CartItem.bulkCreate(
-        items.map((item) => ({
-          userId,
-          skuId: item.skuId,
-          quantity: item.quantity,
-        })),
-        { transaction: t },
-      );
-    }
+      // 2. Si hay items, crea los nuevos (bulkCreate)
+      if (Array.isArray(items) && items.length > 0) {
+        await sequelize.models.CartItem.bulkCreate(
+          items.map((item) => ({
+            userId,
+            skuId: item.skuId,
+            quantity: item.quantity,
+          })),
+          { transaction: t },
+        );
+      }
+    });
     return res
       .status(200)
       .json({ success: true, message: 'Carrito sincronizado correctamente' });
