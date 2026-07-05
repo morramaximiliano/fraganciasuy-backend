@@ -21,7 +21,7 @@ function apiRouter(app) {
   router.use('/products', productsRouter);
   router.use('/skus', skusRouter);
   router.use('/categories', categoriesRouter);
-  router.use('/mp', webHooksRouter);
+  router.use('/webhook', webHooksRouter);
   app.use('/api/v1', router);
 }
 

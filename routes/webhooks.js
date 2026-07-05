@@ -5,7 +5,7 @@ import sequelize from '../libs/sequelize.js';
 
 const router = express.Router();
 
-router.post('/webhook', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   console.log('¡Webhook recibido!');
   console.log('Query params:', req.query);
   console.log('Body:', req.body);
