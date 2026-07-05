@@ -12,4 +12,5 @@ export const config = {
   dbPort: process.env.DB_PORT,
   jwtSecret: process.env.JWT_SECRET,
   mercadoPagoAccessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN,
+  mercadoPagoWebhookUrl: process.env.MERCADO_PAGO_WEBHOOK_URL,
 };

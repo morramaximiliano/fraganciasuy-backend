@@ -26,6 +26,8 @@ router.post('/create-preference', async (req, res, next) => {
     });
 
     const preference = new Preference(client);
+    const fallbackWebhookUrl = `${req.protocol}://${req.get('host')}/api/v1/webhook`;
+    const notificationUrl = config.mercadoPagoWebhookUrl || fallbackWebhookUrl;
 
     const result = await preference.create({
       body: {
@@ -38,6 +40,7 @@ router.post('/create-preference', async (req, res, next) => {
           },
         ],
         external_reference: orderId.toString(),
+        notification_url: notificationUrl,
         back_urls: {
           success: 'https://fraganciasuy-frontend.vercel.app/success',
           failure: 'https://fraganciasuy-frontend.vercel.app/failure',
