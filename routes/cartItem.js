@@ -29,8 +29,7 @@ router.get('/', async (req, res, next) => {
 router.post('/sync', async (req, res, next) => {
   try {
     const userId = req.user.id;
-    let rawItems = req.body.items;
-    const finalItems = rawItems && rawItems.items ? rawItems.items : rawItems;
+    const finalItems = Array.isArray(req.body) ? req.body : [];
     const updatedCart = await syncEntireCart(userId, finalItems);
     return res.status(200).json({
       success: true,
