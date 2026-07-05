@@ -52,9 +52,7 @@ const syncEntireCart = async (userId, items) => {
         );
       }
     });
-    return res
-      .status(200)
-      .json({ success: true, message: 'Carrito sincronizado correctamente' });
+    return { success: true, message: 'Carrito sincronizado correctamente' };
   } catch (error) {
     console.error('Error en syncEntireCart:', error);
     throw error;
