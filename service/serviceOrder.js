@@ -103,8 +103,10 @@ const deleteOrder = async (id) => {
     if (order.status === 'paid') {
       throw new Error('No se puede eliminar una orden ya pagada');
     }
-    await order.destroy();
-    return { success: true, message: 'orden eliminada exitosamente' };
+    if (order && order.status === 'pending') {
+      await order.destroy();
+      return { success: true, message: 'orden eliminada exitosamente' };
+    }
   } catch (error) {
     console.error(`Error en deleteOrder con id ${id}`);
     throw error;
