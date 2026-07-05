@@ -6,7 +6,11 @@ import {
   schemaUpdateCartItem,
   schemaGetCartItem,
 } from '../schema/schemaCartItem.js';
-import { getCartByUser, syncEntireCart } from '../service/serviceCartItem.js';
+import {
+  getCartByUser,
+  syncEntireCart,
+  clearCart,
+} from '../service/serviceCartItem.js';
 
 const router = express.Router();
 
@@ -32,6 +36,19 @@ router.post('/sync', async (req, res, next) => {
       success: true,
       message: 'Carrito sincronizado en la base de datos',
       cartItems: updatedCart,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post('/clear', async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    await clearCart(userId);
+    res.status(200).json({
+      success: true,
+      message: 'Carrito vaciado exitosamente',
     });
   } catch (error) {
     next(error);

@@ -43,11 +43,6 @@ const syncEntireCart = async (userId, items) => {
         userId: userId,
         skuId: item.skuId,
         quantity: item.quantity,
-        brand: item.brand,
-        imageUrl: item.imageUrl,
-        stock: item.stock,
-        price: item.price,
-        name: item.name,
       }));
 
       await sequelize.models.CartItem.bulkCreate(itemsToInsert);
@@ -60,4 +55,15 @@ const syncEntireCart = async (userId, items) => {
   }
 };
 
-export { getCartByUser, syncEntireCart };
+const clearCart = async (userId) => {
+  try {
+    return await sequelize.models.CartItem.destroy({
+      where: { userId },
+    });
+  } catch (error) {
+    console.error('Error en clearCart:', error);
+    throw error;
+  }
+};
+
+export { getCartByUser, syncEntireCart, clearCart };
