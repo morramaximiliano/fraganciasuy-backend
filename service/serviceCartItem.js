@@ -36,19 +36,23 @@ const syncEntireCart = async (userId, items) => {
   try {
     await sequelize.models.CartItem.destroy({
       where: { userId },
+      transaction: t,
     });
 
-    if (items && items.length > 0) {
-      const itemsToInsert = items.map((item) => ({
-        userId,
-        skuId: item.skuId,
-        quantity: item.quantity,
-      }));
-
-      await sequelize.models.CartItem.bulkCreate(itemsToInsert);
+    // 2. Si hay items, crea los nuevos (bulkCreate)
+    if (Array.isArray(items) && items.length > 0) {
+      await sequelize.models.CartItem.bulkCreate(
+        items.map((item) => ({
+          userId,
+          skuId: item.skuId,
+          quantity: item.quantity,
+        })),
+        { transaction: t },
+      );
     }
-
-    return await getCartByUser(userId);
+    return res
+      .status(200)
+      .json({ success: true, message: 'Carrito sincronizado correctamente' });
   } catch (error) {
     console.error('Error en syncEntireCart:', error);
     throw error;
