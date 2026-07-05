@@ -9,7 +9,7 @@ router.post('/', async (req, res, next) => {
   console.log('¡Webhook recibido!');
   console.log('Query params:', req.query);
   console.log('Body:', req.body);
-  const paymentId = req.query['data.id'];
+  const paymentId = req.query['data.id'] || req.body.data?.id;
   if (!paymentId) {
     return res.status(400).send('Falta el ID de pago');
   }
