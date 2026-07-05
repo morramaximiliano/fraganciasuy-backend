@@ -33,12 +33,65 @@ const markOrderAsPaid = async (paymentData, paymentId) => {
     return;
   }
 
-  if (order.status !== 'paid') {
-    await order.update({ status: 'paid' });
-    console.log(
-      `Orden ${order.id} marcada como paid desde payment ${paymentId}`,
+  await sequelize.transaction(async (transaction) => {
+    const lockedOrder = await sequelize.models.Order.findByPk(orderId, {
+      transaction,
+      lock: transaction.LOCK.UPDATE,
+      include: [
+        {
+          model: sequelize.models.OrderDetails,
+          as: 'details',
+          include: [
+            {
+              model: sequelize.models.ProductSku,
+              as: 'sku',
+              attributes: ['id', 'stock'],
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!lockedOrder) {
+      console.warn(
+        `No se encontró la orden ${orderId} para payment ${paymentId}`,
+      );
+      return;
+    }
+
+    if (lockedOrder.status === 'paid') {
+      return;
+    }
+
+    for (const detail of lockedOrder.details || []) {
+      if (!detail.sku) {
+        throw new Error(
+          `No se encontró el SKU ${detail.skuId} de la orden ${orderId}`,
+        );
+      }
+
+      const currentStock = Number(detail.sku.stock);
+      const quantity = Number(detail.quantity);
+
+      await detail.sku.update(
+        {
+          stock: currentStock - quantity,
+        },
+        { transaction },
+      );
+    }
+
+    await lockedOrder.update(
+      {
+        status: 'paid',
+      },
+      { transaction },
     );
-  }
+
+    console.log(
+      `Orden ${lockedOrder.id} marcada como paid y stock descontado desde payment ${paymentId}`,
+    );
+  });
 };
 
 const webhookHandler = async (req, res) => {
