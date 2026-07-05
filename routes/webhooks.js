@@ -1,11 +1,10 @@
 import express from 'express';
-const router = express.Router();
-import { authorizeRole } from '../middlewares/checkRole';
-import { validateToken } from '../middlewares/validateAuth';
 import MercadoPagoConfig from 'mercadopago';
 import { Payment } from 'mercadopago';
-import { config } from '../env-config/config';
-import sequelize from '../libs/sequelize';
+import { config } from '../env-config/config.js';
+import sequelize from '../libs/sequelize.js';
+
+const router = express.Router();
 
 router.post('/webhook', async (req, res, next) => {
   console.log('¡Webhook recibido!');
