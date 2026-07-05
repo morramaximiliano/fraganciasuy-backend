@@ -6,13 +6,7 @@ import {
   schemaUpdateCartItem,
   schemaGetCartItem,
 } from '../schema/schemaCartItem.js';
-import {
-  getCartByUser,
-  addItemToCart,
-  updateCartItem,
-  deleteCartItem,
-  syncEntireCart,
-} from '../service/serviceCartItem.js';
+import { getCartByUser, syncEntireCart } from '../service/serviceCartItem.js';
 
 const router = express.Router();
 
@@ -28,7 +22,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.post('/sync', validateToken, async (req, res, next) => {
+router.post('/sync', async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { items } = req.body;
