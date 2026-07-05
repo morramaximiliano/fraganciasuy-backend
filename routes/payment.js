@@ -26,8 +26,13 @@ router.post('/create-preference', async (req, res, next) => {
     });
 
     const preference = new Preference(client);
-    const fallbackWebhookUrl = `${req.protocol}://${req.get('host')}/api/v1/webhook`;
+    const forwardedHost = req.get('x-forwarded-host');
+    const host = forwardedHost || req.get('host');
+    const fallbackWebhookUrl = `https://${host}/api/v1/webhook`;
     const notificationUrl = config.mercadoPagoWebhookUrl || fallbackWebhookUrl;
+
+    console.log(`Creando preferencia para orden ${orderId}`);
+    console.log(`notification_url usada: ${notificationUrl}`);
 
     const result = await preference.create({
       body: {

@@ -6,6 +6,9 @@ import { errorHandler, logErrors } from './middlewares/error.handler.js';
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Permite detectar correctamente el protocolo original detrás de proxies (Render).
+app.set('trust proxy', true);
+
 app.use(
   cors({
     origin: ['https://fraganciasuy-frontend.vercel.app', 'localhost'],
