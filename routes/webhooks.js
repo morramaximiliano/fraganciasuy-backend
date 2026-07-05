@@ -1,4 +1,5 @@
 import express from 'express';
+import { Transaction } from 'sequelize';
 import { Payment, MercadoPagoConfig, MerchantOrder } from 'mercadopago';
 import { config } from '../env-config/config.js';
 import sequelize from '../libs/sequelize.js';
@@ -36,7 +37,7 @@ const markOrderAsPaid = async (paymentData, paymentId) => {
   await sequelize.transaction(async (transaction) => {
     const lockedOrder = await sequelize.models.Order.findByPk(orderId, {
       transaction,
-      lock: transaction.LOCK.UPDATE,
+      lock: Transaction.LOCK.UPDATE,
       include: [
         {
           model: sequelize.models.OrderDetails,
