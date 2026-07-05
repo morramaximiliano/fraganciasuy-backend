@@ -1,6 +1,5 @@
 import express from 'express';
-import MercadoPagoConfig from 'mercadopago';
-import { Payment } from 'mercadopago';
+import { Payment, MercadoPagoConfig } from 'mercadopago';
 import { config } from '../env-config/config.js';
 import sequelize from '../libs/sequelize.js';
 
