@@ -40,7 +40,7 @@ const syncEntireCart = async (userId, items) => {
 
     if (items && items.length > 0) {
       const itemsToInsert = items.map((item) => ({
-        userId: userId,
+        userId,
         skuId: item.skuId,
         quantity: item.quantity,
       }));
