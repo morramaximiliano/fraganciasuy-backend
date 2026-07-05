@@ -29,7 +29,7 @@ router.get('/', async (req, res, next) => {
 router.post('/sync', async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { items } = req.body;
+    let items = req.body.items;
 
     const updatedCart = await syncEntireCart(userId, items);
     return res.status(200).json({
