@@ -27,6 +27,11 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/sync', async (req, res, next) => {
+  if (!req.body || req.body.length === 0) {
+    return res
+      .status(200)
+      .json({ success: true, cartItems: await getCartByUser(req.user.id) });
+  }
   try {
     const userId = req.user.id;
     const items = req.body;
