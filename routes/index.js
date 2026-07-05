@@ -8,6 +8,7 @@ import authRouter from '../routes/auth.js';
 import cartItemRouter from '../routes/cartItem.js';
 import orderRouter from '../routes/order.js';
 import paymentRouter from '../routes/payment.js';
+import webHooksRouter from '../routes/webhooks.js';
 
 function apiRouter(app) {
   const router = express.Router();
@@ -20,6 +21,7 @@ function apiRouter(app) {
   router.use('/products', productsRouter);
   router.use('/skus', skusRouter);
   router.use('/categories', categoriesRouter);
+  router.use('/mp', webHooksRouter);
   app.use('/api/v1', router);
 }
 
