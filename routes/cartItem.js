@@ -29,8 +29,8 @@ router.get('/', async (req, res, next) => {
 router.post('/sync', async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const finalItems = Array.isArray(req.body) ? req.body : [];
-    const updatedCart = await syncEntireCart(userId, finalItems);
+    const items = req.body;
+    const updatedCart = await syncEntireCart(userId, items);
     return res.status(200).json({
       success: true,
       message: 'Carrito sincronizado en la base de datos',
