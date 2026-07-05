@@ -8,6 +8,8 @@ import {
   deleteOrder,
   getAllOrders,
 } from '../service/serviceOrder.js';
+import { Preference, MercadoPagoConfig } from 'mercadopago';
+import { config } from '../env-config/config.js';
 
 const router = express.Router();
 
@@ -17,7 +19,6 @@ router.post('/', async (req, res) => {
   try {
     const userId = req.user.id;
     const result = await createOrder(userId, req.body);
-
     res.status(201).json({
       success: true,
       newOrder: result.newOrder,
