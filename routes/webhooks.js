@@ -25,32 +25,10 @@ const markOrderAsPaid = async (paymentData, paymentId) => {
     return;
   }
 
-  const order = await sequelize.models.Order.findByPk(orderId);
-
-  if (!order) {
-    console.warn(
-      `No se encontró la orden ${orderId} para payment ${paymentId}`,
-    );
-    return;
-  }
-
   await sequelize.transaction(async (transaction) => {
     const lockedOrder = await sequelize.models.Order.findByPk(orderId, {
       transaction,
       lock: Transaction.LOCK.UPDATE,
-      include: [
-        {
-          model: sequelize.models.OrderDetails,
-          as: 'details',
-          include: [
-            {
-              model: sequelize.models.ProductSku,
-              as: 'sku',
-              attributes: ['id', 'stock'],
-            },
-          ],
-        },
-      ],
     });
 
     if (!lockedOrder) {
@@ -64,17 +42,28 @@ const markOrderAsPaid = async (paymentData, paymentId) => {
       return;
     }
 
-    for (const detail of lockedOrder.details || []) {
-      if (!detail.sku) {
+    const orderDetails = await sequelize.models.OrderDetails.findAll({
+      where: { orderId },
+      transaction,
+    });
+
+    for (const detail of orderDetails) {
+      const sku = await sequelize.models.ProductSku.findByPk(detail.skuId, {
+        transaction,
+        lock: Transaction.LOCK.UPDATE,
+        attributes: ['id', 'stock'],
+      });
+
+      if (!sku) {
         throw new Error(
           `No se encontró el SKU ${detail.skuId} de la orden ${orderId}`,
         );
       }
 
-      const currentStock = Number(detail.sku.stock);
+      const currentStock = Number(sku.stock);
       const quantity = Number(detail.quantity);
 
-      await detail.sku.update(
+      await sku.update(
         {
           stock: currentStock - quantity,
         },
